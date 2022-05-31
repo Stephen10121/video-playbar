@@ -11,18 +11,20 @@
 </head>
 <body>
     <button class="pause-button"></button>
-  <p id="displayArea">f</p>
-<div class="player">
-  <div class="empty"></div>
-	<div class="playbarshell" onmousemove="getPos(event)" onmouseout="stopTracking()" id="playbar">
-		<div class="playbar">
-        	<div class="current"></div>
-			<div class="hoverat"></div>
-			<div class="loaded"></div>
+    <button class="play-button" onclick="togglePlay(event)"></button>
+    <p id="displayArea">f</p>
+    <div class="player">
+        <div class="empty"></div>
+        <div class="playbarshell" onmousemove="getPos(event)" onmouseout="stopTracking()" id="playbar">
+            <div class="playbar">
+                <div class="current"></div>
+                <div class="hoverat"></div>
+                <div class="loaded"></div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button class="playButton pause-button" onclick="togglePlay(event)"></button>
+        </div>
     </div>
-    <div class="buttons">
-      <button class="playButton play-button" onclick="togglePlay(event)"></button>
-    </div>
-</div>
 </body>
 </html>

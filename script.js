@@ -1,27 +1,34 @@
 const playbar = document.querySelector("#playbar");
 const r = document.querySelector(':root');
 
-function getPos(e){
-			let rect = playbar.getBoundingClientRect();
-    		x=e.clientX;
-    		y=e.clientY;
-    		cursor="Your Mouse Position Is : " + (x-rect.left) + " and " + y;
-            r.style.setProperty('--hover-location', (x-rect.left)+"px");
-    		document.getElementById("displayArea").innerHTML=cursor
-    	}
-    
-    	function stopTracking(){
-            r.style.setProperty('--hover-location', "0px");
-    	}
-        
+function getPos(e) {
+    let rect = playbar.getBoundingClientRect();
+    x=e.clientX;
+    y=e.clientY;
+    cursor="Your Mouse Position Is : " + (x-rect.left) + " and " + y;
+    r.style.setProperty('--hover-location', (x-rect.left)+"px");
+    document.getElementById("displayArea").innerHTML=cursor;
+}
+
+function stopTracking(){
+    r.style.setProperty('--hover-location', "0px");
+}
+
 playbar.onclick = (e) => {
-	let rect = playbar.getBoundingClientRect();
-	document.getElementById("displayArea").innerHTML=e.clientX-rect.left;
-   r.style.setProperty('--current-video-position', (e.clientX-rect.left)+"px");
+    let rect = playbar.getBoundingClientRect();
+    document.getElementById("displayArea").innerHTML=e.clientX-rect.left;
+    r.style.setProperty('--current-video-position', (e.clientX-rect.left)+"px");
 }
 
 const togglePlay = (e) => {
-  console.log(e);
+    const playing = e.target.classList.contains("pause-button");
+    if (playing) {
+        e.target.classList.remove("pause-button");
+        e.target.classList.add("play-button");
+    } else {
+        e.target.classList.remove("play-button");
+        e.target.classList.add("pause-button");
+    }
 }
 
 // var isDown = false;
