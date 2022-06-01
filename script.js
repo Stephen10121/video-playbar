@@ -89,6 +89,13 @@ document.addEventListener("DOMContentLoaded", () => { startplayer(); }, false);
 const startplayer = () => {
     player = document.getElementById('video_player');
     player.controls = false;
+    setInterval(() => {
+        console.log((player.buffered.end(0) / player.duration * 100));
+        r.style.setProperty("--preloaded-video-position", (player.buffered.end(0) / player.duration * 100)+"%");
+        if (!videoPaused && !timebarHover) {
+            r.style.setProperty('--current-video-position', (player.currentTime / player.duration * 100)+"%");
+        }
+    }, 200);
 }
 
 const play_vid = () => {
@@ -109,13 +116,6 @@ const stop_vid = () => {
 const change_vol = () => {
     player.volume=document.getElementById("change_vol").value;
 }
-
-setInterval(() => {
-    r.style.setProperty("--preloaded-video-position", (player.buffered / player.duration * 100)+"%");
-    if (!videoPaused && !timebarHover) {
-        r.style.setProperty('--current-video-position', (player.currentTime / player.duration * 100)+"%");
-    }
-}, 200);
 
 // var isDown = false;
 // playbar.addEventListener('mousedown', function(e) {
