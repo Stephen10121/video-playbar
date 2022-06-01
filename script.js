@@ -1,35 +1,121 @@
 const playbar = document.querySelector("#playbar");
 const r = document.querySelector(':root');
+const playButton = document.querySelector("#playButton");
 
-function getPos(e) {
-    let rect = playbar.getBoundingClientRect();
-    x=e.clientX;
-    y=e.clientY;
-    cursor="Your Mouse Position Is : " + (x-rect.left) + " and " + y;
-    r.style.setProperty('--hover-location', (x-rect.left)+"px");
-    document.getElementById("displayArea").innerHTML=cursor;
+// Video Info
+let player;
+let videoPaused = true;
+let videoTimePercentage = 10;
+let videoLength = 1000;
+let videoVolume = 100;
+let timebarHover = false;
+
+const getPos = (e) => {
+    if (e.buttons === 0) {
+        let rect = playbar.getBoundingClientRect();
+        x=e.clientX;
+        y=e.clientY;
+        cursor="Your Mouse Position Is : " + (x-rect.left) + " and " + y;
+        r.style.setProperty('--hover-location', (x-rect.left)+"px");
+        document.getElementById("displayArea").innerHTML=cursor;
+    } else {
+        timebarHover = true;
+        let rect = playbar.getBoundingClientRect();
+        document.getElementById("displayArea").innerHTML=e.clientX-rect.left;
+        player.currentTime = ((e.clientX-rect.left)/rect.width)*player.duration;
+        r.style.setProperty('--current-video-position', ((e.clientX-rect.left)/rect.width*100)+"%");
+        timebarHover = false;
+    }
 }
 
-function stopTracking(){
+const clickPos = (e) => {
+    timebarHover = true;
+    let rect = playbar.getBoundingClientRect();
+    document.getElementById("displayArea").innerHTML=e.clientX-rect.left;
+    player.currentTime = ((e.clientX-rect.left)/rect.width)*player.duration;
+    r.style.setProperty('--current-video-position', ((e.clientX-rect.left)/rect.width*100)+"%");
+    timebarHover = false;
+}
+
+const stopTracking = () => {
     r.style.setProperty('--hover-location', "0px");
 }
 
-playbar.onclick = (e) => {
-    let rect = playbar.getBoundingClientRect();
-    document.getElementById("displayArea").innerHTML=e.clientX-rect.left;
-    r.style.setProperty('--current-video-position', (e.clientX-rect.left)+"px");
-}
-
 const togglePlay = (e) => {
-    const playing = e.target.classList.contains("pause-button");
-    if (playing) {
-        e.target.classList.remove("pause-button");
-        e.target.classList.add("play-button");
+    if (!videoPaused) {
+        pauseVideo();
     } else {
-        e.target.classList.remove("play-button");
-        e.target.classList.add("pause-button");
+        unPauseVideo();
     }
 }
+
+const pauseVideo = () => {
+    playButton.classList.remove("pause-button");
+    playButton.classList.add("play-button");
+    pause_vid();
+}
+
+const unPauseVideo = () => {
+    playButton.classList.remove("play-button");
+    playButton.classList.add("pause-button");
+    play_vid();
+}
+
+const startup = () => {
+    if (videoPaused) {
+        playButton.classList.remove("pause-button");
+        playButton.classList.add("play-button");
+    }
+}
+
+const clickVideo = () => {
+    if (!videoPaused) {
+        pauseVideo();
+    } else {
+        unPauseVideo();
+    }
+}
+
+startup();
+
+document.addEventListener('keydown', (e) => {
+    if (e.code === "Space") {
+        clickVideo();
+    }
+});
+
+document.addEventListener("DOMContentLoaded", () => { startplayer(); }, false);
+
+const startplayer = () => {
+    player = document.getElementById('video_player');
+    player.controls = false;
+}
+
+const play_vid = () => {
+    player.play();
+    videoPaused = false;
+}
+
+const pause_vid = () => {
+    player.pause();
+    videoPaused = true;
+}
+
+const stop_vid = () => {
+    player.pause();
+    player.currentTime = 0;
+}
+
+const change_vol = () => {
+    player.volume=document.getElementById("change_vol").value;
+}
+
+setInterval(() => {
+    r.style.setProperty("--preloaded-video-position", (player.buffered / player.duration * 100)+"%");
+    if (!videoPaused && !timebarHover) {
+        r.style.setProperty('--current-video-position', (player.currentTime / player.duration * 100)+"%");
+    }
+}, 200);
 
 // var isDown = false;
 // playbar.addEventListener('mousedown', function(e) {

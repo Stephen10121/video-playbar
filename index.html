@@ -14,16 +14,21 @@
     <button class="play-button" onclick="togglePlay(event)"></button>
     <p id="displayArea">f</p>
     <div class="player">
-        <div class="empty"></div>
-        <div class="playbarshell" onmousemove="getPos(event)" onmouseout="stopTracking()" id="playbar">
-            <div class="playbar">
-                <div class="current"></div>
-                <div class="hoverat"></div>
-                <div class="loaded"></div>
+        <video id='video_player'>
+            <source src='Julia in 100 Seconds.mp4' type='video/mp4'>
+        </video>
+        <div class="player2">
+            <div class="empty" onclick="clickVideo()"></div>
+            <div class="playbarshell" onmousemove="getPos(event)" onmouseout="stopTracking()" onclick="clickPos(event)" id="playbar">
+                <div class="playbar">
+                    <div class="current"></div>
+                    <div class="hoverat"></div>
+                    <div class="loaded"></div>
+                </div>
             </div>
-        </div>
-        <div class="buttons">
-            <button class="playButton pause-button" onclick="togglePlay(event)"></button>
+            <div class="buttons">
+                <button class="pause-button" id="playButton" onclick="togglePlay(event)"></button>
+            </div>
         </div>
     </div>
 </body>
